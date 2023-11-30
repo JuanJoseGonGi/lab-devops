@@ -23,15 +23,15 @@ func (s Server) Start() error {
 	return nil
 }
 
-func launchFileServer(addr string) error {
-	server := NewServer(addr)
-	server.Handler = http.FileServer(http.Dir("./static"))
-
-	return server.Start()
+func (s Server) StartFileServer() error {
+	s.Handler = http.FileServer(http.Dir("./static"))
+	return s.Start()
 }
 
 func main() {
-	if err := launchFileServer(":8080"); err != nil {
+	server := NewServer(":8080")
+
+	if err := server.StartFileServer(); err != nil {
 		panic(err)
 	}
 }
